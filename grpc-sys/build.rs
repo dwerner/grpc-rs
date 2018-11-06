@@ -69,6 +69,9 @@ fn build_grpc(cc: &mut Build, library: &str) {
 
     let dst = {
         let mut config = Config::new("grpc");
+        // Disable go 1.11's module system which breaks boringssl's build
+        // when installed
+        config.define("GO111MODULE", "off");
         if !cfg!(feature = "secure") {
             // boringssl's configuration is still included, but targets
             // will never be built, hence specify a fake go to get rid of
